@@ -24,6 +24,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <meta name="author" content="Nathan Perfetti" />
+    <meta name="generator" content={Astro.generator} />
 
     <!-- Open Graph / Social -->
     <meta property="og:type" content="website" />

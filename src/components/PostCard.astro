@@ -5,47 +5,67 @@ interface Props {
   date: Date;
   slug: string;
   tags?: string[];
+  heroImage?: string;
 }
 
-const { title, description, date, slug, tags = [] } = Astro.props;
+const { title, description, date, slug, tags = [], heroImage } = Astro.props;
 
 const formattedDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
-  month: 'long',
+  month: 'short',
   day: 'numeric'
 });
 ---
 
 <article class="group">
   <a href={`/blog/${slug}`} class="block">
-    <div class="p-6 rounded-xl border border-primary-200/30 dark:border-primary-900/30 bg-white/80 dark:bg-zinc-900/60 hover:border-primary-400/50 dark:hover:border-primary-700/50 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-      <div class="flex items-center gap-3 mb-3">
-        <time class="text-sm text-zinc-500 dark:text-zinc-500 font-medium" datetime={date.toISOString()}>
-          {formattedDate}
-        </time>
-        {tags.length > 0 && (
-          <div class="flex flex-wrap gap-1.5">
-            {tags.map((tag) => (
-              <span class="text-xs px-2.5 py-0.5 rounded-full bg-primary-100/80 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 font-medium">
-                {tag}
-              </span>
-            ))}
+    <div class="flex gap-4 p-5 rounded-xl border border-primary-200/30 dark:border-primary-900/30 bg-white/80 dark:bg-zinc-900/60 hover:border-primary-400/50 dark:hover:border-primary-700/50 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+      <div class="hidden sm:block shrink-0 w-20 h-20 rounded-lg overflow-hidden">
+        {heroImage ? (
+          <img
+            src={heroImage}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            class="w-full h-full object-cover"
+          />
+        ) : (
+          <div class="w-full h-full bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/40 dark:to-primary-800/30 flex items-center justify-center">
+            <svg class="w-8 h-8 text-primary-400/60 dark:text-primary-500/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
           </div>
         )}
       </div>
+      
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-2 flex-wrap">
+          <time class="text-sm text-zinc-500 dark:text-zinc-400" datetime={date.toISOString()}>
+            {formattedDate}
+          </time>
+          {tags.length > 0 && (
+            <>
+              <span class="text-zinc-300 dark:text-zinc-600">·</span>
+              {tags.map((tag) => (
+                <span class="text-xs text-primary-600 dark:text-primary-400">
+                  #{tag}
+                </span>
+              ))}
+            </>
+          )}
+        </div>
 
-      <h2 class="text-xl font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
-        {title}
-      </h2>
+        <h2 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200 line-clamp-1">
+          {title}
+        </h2>
 
-      <p class="mt-2 text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">
-        {description}
-      </p>
+        <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2">
+          {description}
+        </p>
+      </div>
 
-      <!-- Read more indicator -->
-      <div class="mt-4 flex items-center gap-1 text-sm font-semibold text-primary-600 dark:text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        Read more
-        <svg class="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="hidden sm:flex items-center text-primary-600 dark:text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
       </div>

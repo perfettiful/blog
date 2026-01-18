@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="404 - Page Not Found">
+  <Header />
+
+  <main class="flex-1 flex items-center justify-center" transition:name="main" transition:animate="none">
+    <div class="text-center px-4 py-20">
+      <h1 class="text-8xl font-bold text-primary-600 dark:text-primary-400 mb-4">404</h1>
+      <h2 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">
+        Page not found
+      </h2>
+      <p class="text-zinc-600 dark:text-zinc-400 mb-8 max-w-md mx-auto">
+        Looks like this page got lost in the void. Maybe it was never here, or maybe it wandered off somewhere.
+      </p>
+      <a
+        href="/"
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-500 hover:-translate-y-0.5 transition-all duration-200"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to home
+      </a>
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

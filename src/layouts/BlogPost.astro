@@ -3,6 +3,11 @@ import BaseLayout from './BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
+interface Source {
+  title: string;
+  url: string;
+}
+
 interface Props {
   title: string;
   description: string;
@@ -10,9 +15,12 @@ interface Props {
   updatedDate?: Date;
   tags?: string[];
   image?: string;
+  heroImage?: string;
+  readingTime?: number;
+  sources?: Source[];
 }
 
-const { title, description, date, updatedDate, tags = [], image } = Astro.props;
+const { title, description, date, updatedDate, tags = [], image, heroImage, readingTime, sources = [] } = Astro.props;
 
 const formattedDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -25,13 +33,67 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric'
 });
+
+// JSON-LD structured data for SEO
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": title,
+  "description": description,
+  "author": {
+    "@type": "Person",
+    "name": "Nathan Perfetti",
+    "url": "https://blog.perfetti.dev/about"
+  },
+  "datePublished": date.toISOString(),
+  "dateModified": (updatedDate || date).toISOString(),
+  "publisher": {
+    "@type": "Person",
+    "name": "Nathan Perfetti"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": Astro.url.href
+  },
+  ...(image && { "image": new URL(image, Astro.site).href }),
+  ...(tags.length > 0 && { "keywords": tags.join(", ") })
+};
 ---
 
 <BaseLayout title={title} description={description} image={image}>
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+
   <Header />
+
+  <!-- Reading Progress Bar -->
+  <div id="progress-bar" class="fixed top-0 left-0 h-0.5 bg-primary-500 z-[60] transition-all duration-100" style="width: 0%"></div>
 
   <main class="flex-1" transition:name="main" transition:animate="none">
     <article class="max-w-3xl mx-auto px-4 py-12">
+      <figure class="mb-8 -mx-4 sm:mx-0 overflow-hidden">
+        {heroImage ? (
+          <img
+            src={heroImage}
+            alt={`Hero image for ${title}`}
+            loading="eager"
+            decoding="async"
+            class="w-full h-48 sm:h-56 rounded-none sm:rounded-xl object-cover"
+          />
+        ) : (
+          <div class="w-full h-32 sm:h-40 rounded-none sm:rounded-xl bg-gradient-to-br from-primary-100 via-primary-50 to-primary-100 dark:from-primary-900/30 dark:via-primary-800/20 dark:to-primary-900/30 flex items-center justify-center relative overflow-hidden">
+            <!-- Decorative pattern -->
+            <div class="absolute inset-0 opacity-30 dark:opacity-20" style="background-image: url(&quot;data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2316a34a' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E&quot;);"></div>
+            <!-- Center icon -->
+            <div class="relative z-10 flex items-center gap-3 text-primary-500/50 dark:text-primary-400/40">
+              <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+            </div>
+          </div>
+        )}
+      </figure>
+
       <header class="mb-8">
         <div class="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-500 mb-4">
           <time datetime={date.toISOString()}>{formattedDate}</time>
@@ -39,6 +101,12 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
             <>
               <span>&bull;</span>
               <span>Updated {formattedUpdatedDate}</span>
+            </>
+          )}
+          {readingTime && (
+            <>
+              <span>&bull;</span>
+              <span>{readingTime} min read</span>
             </>
           )}
         </div>
@@ -56,7 +124,7 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
             {tags.map((tag) => (
               <a
                 href={`/tags/${tag}`}
-                class="text-sm px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 hover:bg-primary-200 dark:hover:bg-primary-900/50 transition-colors"
+                class="text-sm px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 hover:bg-primary-200 dark:hover:bg-primary-900/50 transition-colors duration-200"
               >
                 {tag}
               </a>
@@ -65,14 +133,43 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
         )}
       </header>
 
-      <div class="prose">
+      <div class="prose" id="article-content">
         <slot />
       </div>
 
-      <footer class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+      {sources.length > 0 && (
+        <section class="mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800">
+          <h2 class="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+            Sources
+          </h2>
+          <ul class="space-y-2">
+            {sources.map((source, index) => (
+              <li class="flex items-start gap-3">
+                <span class="text-zinc-400 dark:text-zinc-500 text-sm font-mono mt-0.5">[{index + 1}]</span>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 hover:underline transition-colors duration-200 break-all"
+                >
+                  {source.title}
+                  <svg class="inline-block w-3.5 h-3.5 ml-1 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <footer class="mt-8 pt-8 border-t border-zinc-200 dark:border-zinc-800">
         <a
           href="/blog"
-          class="inline-flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+          class="inline-flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200"
         >
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -85,3 +182,35 @@ const formattedUpdatedDate = updatedDate?.toLocaleDateString('en-US', {
 
   <Footer />
 </BaseLayout>
+
+<script>
+  function setupProgressBar() {
+    const progressBar = document.getElementById('progress-bar');
+    const article = document.getElementById('article-content');
+    
+    if (!progressBar || !article) return;
+
+    function updateProgress() {
+      const articleRect = article.getBoundingClientRect();
+      const articleTop = articleRect.top + window.scrollY;
+      const articleHeight = articleRect.height;
+      const windowHeight = window.innerHeight;
+      const scrollY = window.scrollY;
+
+      const start = articleTop - windowHeight;
+      const end = articleTop + articleHeight;
+      const current = scrollY;
+
+      let progress = ((current - start) / (end - start)) * 100;
+      progress = Math.max(0, Math.min(100, progress));
+
+      progressBar.style.width = `${progress}%`;
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+  }
+
+  setupProgressBar();
+  document.addEventListener('astro:after-swap', setupProgressBar);
+</script>

@@ -11,7 +11,11 @@ export async function getStaticPaths() {
 }
 
 const post = Astro.props;
-const { Content } = await render(post);
+const { Content, remarkPluginFrontmatter } = await render(post);
+
+// Calculate reading time (roughly 200 words per minute)
+const wordCount = post.body?.split(/\s+/).length || 0;
+const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 ---
 
 <BlogPost
@@ -20,7 +24,10 @@ const { Content } = await render(post);
   date={post.data.date}
   updatedDate={post.data.updatedDate}
   tags={post.data.tags}
-  image={post.data.image}
+  image={post.data.image || post.data.heroImage}
+  heroImage={post.data.heroImage}
+  readingTime={readingTime}
+  sources={post.data.sources}
 >
   <Content />
 </BlogPost>
