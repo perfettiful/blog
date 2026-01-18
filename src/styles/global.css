@@ -36,6 +36,34 @@
     @apply bg-primary-400/40;
   }
 
+  /* Custom green scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--color-primary-500), var(--color-primary-700));
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--color-primary-400), var(--color-primary-600));
+    background-clip: padding-box;
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary-600) transparent;
+  }
+
   /* Better focus styles */
   button:focus,
   a:focus {
@@ -50,6 +78,13 @@
   button,
   a {
     -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Fancy horizontal rules */
+  hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-primary-500), transparent);
   }
 }
 
@@ -75,43 +110,112 @@
   }
 
   .prose a {
-    @apply text-primary-600 dark:text-primary-400 underline underline-offset-2 hover:text-primary-700 dark:hover:text-primary-300 transition-colors;
+    @apply text-primary-600 dark:text-primary-400 transition-all duration-200;
+    text-decoration: none;
+    background-image: linear-gradient(var(--color-primary-400), var(--color-primary-400));
+    background-size: 0% 2px;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+  }
+
+  .prose a:hover {
+    @apply text-primary-500 dark:text-primary-300;
+    background-size: 100% 2px;
   }
 
   .prose ul {
-    @apply mb-4 ml-6 list-disc;
+    @apply mb-4 ml-6;
+    list-style: none;
+  }
+
+  .prose ul li {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+
+  .prose ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary-500);
+    font-size: 0.875rem;
   }
 
   .prose ol {
-    @apply mb-4 ml-6 list-decimal;
+    @apply mb-4 ml-6;
+    list-style: none;
+    counter-reset: ol-counter;
+  }
+
+  .prose ol li {
+    position: relative;
+    padding-left: 2rem;
+    counter-increment: ol-counter;
+  }
+
+  .prose ol li::before {
+    content: counter(ol-counter);
+    position: absolute;
+    left: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: var(--color-primary-500);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0.1rem;
   }
 
   .prose li {
-    @apply mb-2 text-zinc-700 dark:text-zinc-300;
+    @apply mb-3 text-zinc-700 dark:text-zinc-300;
   }
 
   .prose blockquote {
-    @apply border-l-4 border-primary-500 pl-4 italic text-zinc-600 dark:text-zinc-400 my-6;
+    @apply pl-5 italic text-zinc-600 dark:text-zinc-400 my-6;
+    border-left: 3px solid transparent;
+    border-image: linear-gradient(180deg, var(--color-primary-400), var(--color-primary-600)) 1;
+    background: linear-gradient(90deg, rgba(22, 163, 74, 0.05), transparent);
+    padding: 1rem 1.25rem;
+    border-radius: 0 0.5rem 0.5rem 0;
   }
 
   .prose code {
-    @apply bg-zinc-200 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-sm font-mono;
+    @apply px-1.5 py-0.5 rounded text-sm font-mono;
+    background: linear-gradient(135deg, rgba(22, 163, 74, 0.1), rgba(22, 163, 74, 0.05));
+    color: var(--color-primary-600);
+  }
+
+  .dark .prose code {
+    background: linear-gradient(135deg, rgba(52, 211, 122, 0.15), rgba(52, 211, 122, 0.05));
+    color: var(--color-primary-400);
   }
 
   .prose pre {
-    @apply bg-zinc-900 dark:bg-zinc-950 text-zinc-100 p-4 rounded-lg overflow-x-auto my-6;
+    @apply text-zinc-100 p-4 rounded-lg overflow-x-auto my-6;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    border: 1px solid rgba(22, 163, 74, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
   .prose pre code {
     @apply bg-transparent p-0;
+    color: inherit;
   }
 
   .prose img {
     @apply rounded-lg my-6;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   }
 
   .prose hr {
-    @apply border-zinc-200 dark:border-zinc-800 my-8;
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-primary-500), transparent);
+    margin: 2.5rem 0;
   }
 
   /* Skeleton shimmer animation for lazy loading */
@@ -143,5 +247,81 @@
     100% {
       transform: translateX(100%);
     }
+  }
+
+  /* Glow text effect - use with .glow-text */
+  .glow-text {
+    text-shadow: 0 0 10px rgba(22, 163, 74, 0.5), 0 0 20px rgba(22, 163, 74, 0.3);
+  }
+
+  /* Animated gradient border - use with .gradient-border */
+  .gradient-border {
+    position: relative;
+    background: var(--color-surface-dark);
+    border-radius: 0.75rem;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, var(--color-primary-400), var(--color-primary-600), var(--color-primary-400));
+    background-size: 200% 200%;
+    border-radius: inherit;
+    z-index: -1;
+    animation: gradient-rotate 3s linear infinite;
+  }
+
+  @keyframes gradient-rotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Subtle float animation */
+  .float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  /* Pulse glow animation */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(22, 163, 74, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(22, 163, 74, 0.6), 0 0 30px rgba(22, 163, 74, 0.3); }
+  }
+
+  /* Typewriter cursor blink */
+  .cursor-blink::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+    color: var(--color-primary-500);
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Matrix-style text reveal (for hero text) */
+  .text-reveal {
+    background: linear-gradient(90deg, var(--color-primary-400), var(--color-primary-600));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% auto;
+    animation: text-shimmer 3s linear infinite;
+  }
+
+  @keyframes text-shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
   }
 }
