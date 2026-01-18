@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f0c9b8"/>
+      <stop offset="100%" stop-color="#e0a890"/>
+    </linearGradient>
+    <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3d2a1f"/>
+      <stop offset="100%" stop-color="#1f1510"/>
+    </linearGradient>
+    <linearGradient id="beardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5a3d2e"/>
+      <stop offset="100%" stop-color="#3d2a1f"/>
+    </linearGradient>
+    <linearGradient id="shirtGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8f8fc"/>
+      <stop offset="100%" stop-color="#e0e0e8"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" fill="#15803d" rx="20"/>
+  
+  <!-- Shirt - low poly triangles -->
+  <polygon points="40,200 100,155 160,200" fill="#f0f0f5"/>
+  <polygon points="40,200 100,155 70,200" fill="#e8e8f0"/>
+  <polygon points="160,200 100,155 130,200" fill="#e0e0e8"/>
+  <polygon points="70,200 100,155 100,175" fill="#f5f5fa"/>
+  <polygon points="130,200 100,155 100,175" fill="#ebebf2"/>
+  
+  <!-- Neck -->
+  <polygon points="85,155 100,140 115,155" fill="url(#skinGrad)"/>
+  <polygon points="85,155 115,155 100,165" fill="#d4a590"/>
+  
+  <!-- Face base - geometric polygons -->
+  <polygon points="60,85 100,45 140,85" fill="url(#skinGrad)"/>
+  <polygon points="60,85 100,130 140,85" fill="#e8c0a8"/>
+  <polygon points="60,85 55,105 75,130 100,130" fill="#ddb8a0"/>
+  <polygon points="140,85 145,105 125,130 100,130" fill="#d4a890"/>
+  
+  <!-- Forehead highlight -->
+  <polygon points="70,70 100,50 130,70 100,85" fill="#f5d5c5"/>
+  
+  <!-- Hair - layered polygons -->
+  <polygon points="45,75 100,15 155,75" fill="url(#hairGrad)"/>
+  <polygon points="50,80 75,40 100,25" fill="#2d1f15"/>
+  <polygon points="150,80 125,40 100,25" fill="#3d2a1f"/>
+  <polygon points="45,75 55,95 45,95" fill="#2d1f15"/>
+  <polygon points="155,75 145,95 155,95" fill="#3d2a1f"/>
+  <!-- Hair texture -->
+  <polygon points="60,55 80,35 100,30 85,60" fill="#4a3525"/>
+  <polygon points="140,55 120,35 100,30 115,60" fill="#2d1f15"/>
+  <polygon points="55,70 70,50 85,65" fill="#3d2a1f"/>
+  <polygon points="145,70 130,50 115,65" fill="#4a3525"/>
+  
+  <!-- Glasses frames -->
+  <polygon points="62,88 78,82 82,92 66,98" fill="#404040"/>
+  <polygon points="78,82 95,80 95,92 82,92" fill="#505050"/>
+  <polygon points="105,80 122,82 118,92 105,92" fill="#505050"/>
+  <polygon points="122,82 138,88 134,98 118,92" fill="#404040"/>
+  <!-- Glasses bridge -->
+  <polygon points="95,85 105,85 105,90 95,90" fill="#454545"/>
+  <!-- Glasses lenses -->
+  <polygon points="66,90 80,86 82,94 68,96" fill="#d8e8f0" fill-opacity="0.3"/>
+  <polygon points="118,86 134,90 132,96 118,94" fill="#d8e8f0" fill-opacity="0.3"/>
+  <!-- Eyes behind glasses -->
+  <circle cx="74" cy="91" r="3" fill="#3d2820"/>
+  <circle cx="126" cy="91" r="3" fill="#3d2820"/>
+  <circle cx="74" cy="90" r="1" fill="#fff"/>
+  <circle cx="126" cy="90" r="1" fill="#fff"/>
+  
+  <!-- Nose -->
+  <polygon points="100,90 95,108 100,112 105,108" fill="#d8a890"/>
+  <polygon points="95,108 100,112 97,108" fill="#c89880"/>
+  
+  <!-- Beard - geometric style -->
+  <polygon points="60,105 75,130 55,130" fill="url(#beardGrad)"/>
+  <polygon points="140,105 125,130 145,130" fill="url(#beardGrad)"/>
+  <polygon points="75,130 100,145 55,145 55,130" fill="#5a3d2e"/>
+  <polygon points="125,130 100,145 145,145 145,130" fill="#4a3020"/>
+  <polygon points="100,145 75,130 125,130" fill="#503828"/>
+  
+  <!-- Mustache -->
+  <polygon points="85,112 100,118 100,115 90,110" fill="#4a3020"/>
+  <polygon points="115,112 100,118 100,115 110,110" fill="#5a3d2e"/>
+  
+  <!-- Mouth area (hidden by beard/mustache, just shadow) -->
+  <polygon points="90,120 100,125 110,120 100,128" fill="#3d2818"/>
+  
+  <!-- Cheek shadows -->
+  <polygon points="55,100 60,105 65,115 55,115" fill="#d4a080"/>
+  <polygon points="145,100 140,105 135,115 145,115" fill="#c89070"/>
+  
+  <!-- Ear hints -->
+  <polygon points="52,90 48,100 52,110 58,100" fill="#e0b098"/>
+  <polygon points="148,90 152,100 148,110 142,100" fill="#d4a088"/>
+</svg>

@@ -16,30 +16,41 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
   <main class="flex-1">
     <!-- Hero Section -->
     <section class="max-w-3xl mx-auto px-4 py-16">
-      <div class="space-y-6">
-        <h1 class="text-5xl font-bold text-zinc-900 dark:text-zinc-100">
-          Hey, I'm Nathan
-        </h1>
-        <p class="text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed">
-          Welcome to my corner of the internet. I write about tech, gaming, and the random things that spark my curiosity.
-          I've been tinkering with computers and building things ever since I discovered you could do more with them than just play games.
-        </p>
-        <div class="flex gap-4">
-          <a
-            href="/blog"
-            class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors"
-          >
-            Read the blog
-            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-          <a
-            href="/about"
-            class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-          >
-            About me
-          </a>
+      <div class="flex flex-col sm:flex-row items-center sm:items-start gap-8">
+        <!-- Pixel Art Avatar -->
+        <div class="shrink-0">
+          <img 
+            src="/avatar-pixel.svg" 
+            alt="Nathan Perfetti low-poly portrait" 
+            class="w-32 h-32 sm:w-40 sm:h-40 rounded-2xl shadow-xl"
+          />
+        </div>
+
+        <div class="space-y-6 text-center sm:text-left">
+          <h1 class="text-5xl font-bold text-zinc-900 dark:text-zinc-100">
+            Hey, I'm Nathan
+          </h1>
+          <p class="text-xl text-zinc-600 dark:text-zinc-400 leading-relaxed">
+            Welcome to my corner of the internet. I write about tech, gaming, and the random things that spark my curiosity.
+            I've been tinkering with computers and building things ever since I discovered you could do more with them than just play games.
+          </p>
+          <div class="flex justify-center sm:justify-start gap-4">
+            <a
+              href="/blog"
+              class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors"
+            >
+              Read the blog
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+            <a
+              href="/about"
+              class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-primary-300 dark:border-primary-800 text-primary-700 dark:text-primary-300 font-medium hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors"
+            >
+              About me
+            </a>
+          </div>
         </div>
       </div>
     </section>

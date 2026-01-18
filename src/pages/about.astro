@@ -9,10 +9,20 @@ import Footer from '../components/Footer.astro';
 
   <main class="flex-1">
     <article class="max-w-3xl mx-auto px-4 py-12">
-      <header class="mb-8">
-        <h1 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
-          About Me
-        </h1>
+      <header class="mb-10 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+        <img 
+          src="/avatar-pixel.svg" 
+          alt="Nathan Perfetti low-poly portrait" 
+          class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl shadow-xl shrink-0"
+        />
+        <div class="text-center sm:text-left">
+          <h1 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+            About Me
+          </h1>
+          <p class="text-lg text-zinc-600 dark:text-zinc-400">
+            Software developer, gamer, and lifelong learner.
+          </p>
+        </div>
       </header>
 
       <div class="prose">
