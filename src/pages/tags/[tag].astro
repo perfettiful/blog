@@ -23,10 +23,10 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props;
 ---
 
-<BaseLayout title={`Posts tagged "${tag}" | perfetti`} description={`All posts tagged with ${tag}.`}>
+<BaseLayout title={`#${tag}`} description={`All posts tagged with ${tag}.`}>
   <Header />
 
-  <main class="flex-1">
+  <main class="flex-1" transition:name="main" transition:animate="none">
     <div class="max-w-3xl mx-auto px-4 py-12">
       <header class="mb-12">
         <a

@@ -4,10 +4,10 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
 
-<BaseLayout title="About | perfetti" description="Learn more about Nathan Perfetti and this blog.">
+<BaseLayout title="About" description="Learn more about Nathan Perfetti and this blog.">
   <Header />
 
-  <main class="flex-1">
+  <main class="flex-1" transition:name="main" transition:animate="none">
     <article class="max-w-4xl mx-auto px-4 py-16">
       <header class="mb-12 flex flex-col md:flex-row items-center md:items-start gap-8">
         <!-- Avatar with inset ring -->
@@ -36,8 +36,7 @@ import Footer from '../components/Footer.astro';
 
       <div class="prose">
         <p>
-          Hey there! I'm Nathan, a software developer with a passion for building secure systems and understanding how things break.
-          My journey into tech started in an unexpected way: exploiting a clone glitch in Pokemon Gold. What began as curiosity
+          Hey there! I'm Nathan, a software developer with a passion for building secure systems and understanding how things break. What began as curiosity
           about how games could be manipulated turned into a lifelong obsession with understanding software at a deep level.
         </p>
 
