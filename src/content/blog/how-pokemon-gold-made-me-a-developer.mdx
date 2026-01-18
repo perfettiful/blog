@@ -1,0 +1,52 @@
+---
+title: "How Pokemon Gold Made Me a Developer"
+description: "The story of how a game breaking glitch in Pokemon Gold sparked my lifelong fascination with technology and eventually led me to become a software developer."
+date: 2024-01-18
+tags: ["gaming", "personal", "tech"]
+---
+
+I was maybe ten years old when I first discovered that video games could be broken.
+
+Not broken in the "my cartridge doesn't work" sense, but broken in a way that felt like magic. I'm talking about the infamous clone glitch in Pokemon Gold, and honestly, discovering it changed the entire trajectory of my life.
+
+## The Setup
+
+Picture this: it's a Saturday morning, I'm sitting cross legged on the carpet in front of the TV, Game Boy Color in hand. Pokemon Gold had consumed my entire existence for weeks at this point. I'd beaten the Elite Four, caught Lugia, and was deep into the post game grind of trying to catch them all.
+
+But there was a problem. I had exactly one Master Ball, and there were way too many legendaries left to catch. Trading was complicated because none of my friends had the game yet. I was stuck.
+
+Then my older cousin mentioned something that sounded absolutely insane: "You know you can duplicate your Pokemon and items, right?"
+
+## The Clone Glitch
+
+He showed me how to do it, and I remember feeling like I was doing something forbidden. The process went something like this:
+
+You'd go to a PC in any Pokemon Center, deposit the Pokemon you wanted to clone (holding whatever item you wanted duplicated), and then save the game. Then you'd withdraw the Pokemon from the box. Here's where it got weird: you'd go to switch boxes, and the game would ask if you wanted to save. You'd say yes, and then at a very specific moment during the save process, you'd turn off the Game Boy.
+
+When you turned it back on, the Pokemon would be in your party AND still in the box. Two of the same Pokemon. Whatever item it was holding? Duplicated too. Master Balls for days.
+
+## Why It Mattered
+
+Looking back, this was my first real encounter with a bug in software. Of course I didn't think of it that way at the time. To ten year old me, it was basically sorcery. But something clicked in my brain that day.
+
+I started asking questions I'd never thought to ask before. Why did this work? What was happening when the game saved? Why did timing matter so much? If you turned it off too early, nothing happened. Too late, and your save would corrupt (learned that one the hard way).
+
+The glitch exploited a race condition in the game's save system. When you changed boxes, the game saved the box data separately from your party data. By interrupting the save at just the right moment, you could end up with the game having saved the Pokemon to the new box but not yet having removed it from your party. The game's state became inconsistent, and that inconsistency worked in your favor.
+
+I didn't understand any of that technical stuff back then, obviously. But the seed was planted. Software could be manipulated. Rules could be bent. And most importantly: understanding how things worked under the hood gave you power.
+
+## The Rabbit Hole
+
+After that, I became obsessed with game glitches. I learned about MissingNo in the original Pokemon games, a corrupted data Pokemon that could multiply items in your inventory. I discovered that Ocarina of Time had entire categories of speedrun techniques based on wrong warps and memory manipulation. Every game became a puzzle to solve, not just in the intended way but in all the unintended ways too.
+
+This curiosity eventually extended beyond games. I wanted to know how websites worked, so I started viewing source code. I wanted to make my own games, so I downloaded Game Maker and started tinkering. Every time I encountered something I didn't understand, I had to pull it apart and figure out what made it tick.
+
+## Full Circle
+
+Now I write software for a living, and I still think about that clone glitch sometimes. It taught me that systems are fallible. They're built by humans, and humans make assumptions that can be violated. Every piece of software has edge cases that weren't considered, race conditions that weren't handled, states that "shouldn't" be possible but somehow are.
+
+Debugging, in a lot of ways, is just hunting for glitches. Finding the specific conditions that cause a system to behave unexpectedly. The thrill I get from tracking down a particularly nasty bug feels exactly like the thrill ten year old me felt turning off that Game Boy at precisely the right moment.
+
+I sometimes wonder if Game Freak knows how many developers they accidentally created with that one poorly handled save routine. Probably more than a few of us owe our careers to that beautiful, exploitable mess of a feature.
+
+So thanks, Pokemon Gold. Thanks for the infinite Master Balls. But more importantly, thanks for showing me that the real game was figuring out how the game itself worked.

@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
+
+const tagCounts = tags.reduce((acc, tag) => {
+  acc[tag] = posts.filter((post) => post.data.tags.includes(tag)).length;
+  return acc;
+}, {} as Record<string, number>);
+---
+
+<BaseLayout title="Tags | perfettiful" description="Browse posts by tag.">
+  <Header />
+
+  <main class="flex-1">
+    <div class="max-w-3xl mx-auto px-4 py-12">
+      <header class="mb-12">
+        <h1 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+          Tags
+        </h1>
+        <p class="text-xl text-zinc-600 dark:text-zinc-400">
+          Browse posts by topic.
+        </p>
+      </header>
+
+      {tags.length === 0 ? (
+        <p class="text-zinc-600 dark:text-zinc-400">No tags yet.</p>
+      ) : (
+        <div class="flex flex-wrap gap-3">
+          {tags.map((tag) => (
+            <a
+              href={`/tags/${tag}`}
+              class="px-4 py-2 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-primary-100 dark:hover:bg-primary-900/30 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+            >
+              {tag}
+              <span class="ml-2 text-zinc-500 dark:text-zinc-500">
+                ({tagCounts[tag]})
+              </span>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

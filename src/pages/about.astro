@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="About | perfettiful" description="Learn more about Nathan Perfetti and this blog.">
+  <Header />
+
+  <main class="flex-1">
+    <article class="max-w-3xl mx-auto px-4 py-12">
+      <header class="mb-8">
+        <h1 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+          About Me
+        </h1>
+      </header>
+
+      <div class="prose">
+        <p>
+          Hey there! I'm Nathan, a software developer with a passion for building things that matter.
+          My journey into tech started in an unexpected way: through video games. What began as curiosity
+          about how games worked turned into a lifelong obsession with understanding and creating software.
+        </p>
+
+        <p>
+          These days I spend my time exploring new technologies, writing code, and occasionally writing
+          about the things I learn along the way. This blog is my space to share those thoughts and
+          hopefully help others who are on a similar journey.
+        </p>
+
+        <h2>What I Write About</h2>
+
+        <p>
+          You'll find posts here covering a range of topics, including:
+        </p>
+
+        <ul>
+          <li>Software development and programming</li>
+          <li>Gaming and game development</li>
+          <li>Tech discoveries and experiments</li>
+          <li>Random thoughts and observations</li>
+        </ul>
+
+        <h2>Get in Touch</h2>
+
+        <p>
+          Feel free to reach out if you want to chat about anything tech related, have questions about
+          something I've written, or just want to say hi. You can find me on
+          <a href="https://github.com/nathanperfetti" target="_blank" rel="noopener noreferrer">GitHub</a>
+          or <a href="https://twitter.com/nathanperfetti" target="_blank" rel="noopener noreferrer">Twitter</a>.
+        </p>
+      </div>
+    </article>
+  </main>
+
+  <Footer />
+</BaseLayout>

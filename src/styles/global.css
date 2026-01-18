@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #0ea5e9;
+  --color-primary-600: #0284c7;
+  --color-primary-700: #0369a1;
+  --color-primary-800: #075985;
+  --color-primary-900: #0c4a6e;
+
+  --color-surface: #fafafa;
+  --color-surface-dark: #0a0a0a;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-zinc-50 text-zinc-900 antialiased;
+    @apply dark:bg-zinc-950 dark:text-zinc-100;
+  }
+
+  ::selection {
+    @apply bg-primary-500/30;
+  }
+}
+
+@layer components {
+  .prose {
+    @apply max-w-none;
+  }
+
+  .prose h1 {
+    @apply text-3xl font-bold mb-6 mt-10 text-zinc-900 dark:text-zinc-100;
+  }
+
+  .prose h2 {
+    @apply text-2xl font-semibold mb-4 mt-8 text-zinc-900 dark:text-zinc-100;
+  }
+
+  .prose h3 {
+    @apply text-xl font-semibold mb-3 mt-6 text-zinc-900 dark:text-zinc-100;
+  }
+
+  .prose p {
+    @apply mb-4 leading-relaxed text-zinc-700 dark:text-zinc-300;
+  }
+
+  .prose a {
+    @apply text-primary-600 dark:text-primary-400 underline underline-offset-2 hover:text-primary-700 dark:hover:text-primary-300 transition-colors;
+  }
+
+  .prose ul {
+    @apply mb-4 ml-6 list-disc;
+  }
+
+  .prose ol {
+    @apply mb-4 ml-6 list-decimal;
+  }
+
+  .prose li {
+    @apply mb-2 text-zinc-700 dark:text-zinc-300;
+  }
+
+  .prose blockquote {
+    @apply border-l-4 border-primary-500 pl-4 italic text-zinc-600 dark:text-zinc-400 my-6;
+  }
+
+  .prose code {
+    @apply bg-zinc-200 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-sm font-mono;
+  }
+
+  .prose pre {
+    @apply bg-zinc-900 dark:bg-zinc-950 text-zinc-100 p-4 rounded-lg overflow-x-auto my-6;
+  }
+
+  .prose pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .prose img {
+    @apply rounded-lg my-6;
+  }
+
+  .prose hr {
+    @apply border-zinc-200 dark:border-zinc-800 my-8;
+  }
+}
