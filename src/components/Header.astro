@@ -8,23 +8,24 @@ const navLinks = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="border-b border-primary-200/50 dark:border-primary-900/50 bg-surface/90 dark:bg-surface-dark/90 backdrop-blur-sm sticky top-0 z-50">
-  <nav class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
-    <a href="/" class="text-xl font-bold text-zinc-900 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-      perfetti
+<header class="border-b border-primary-200/40 dark:border-primary-900/40 bg-surface/80 dark:bg-surface-dark/80 backdrop-blur-md sticky top-0 z-50">
+  <nav class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="/" class="group text-lg font-bold text-zinc-900 dark:text-zinc-100 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
+      <span class="inline-block group-hover:scale-105 transition-transform duration-200">blog.perfetti.dev</span>
     </a>
 
-    <div class="flex items-center gap-6">
-      <ul class="flex items-center gap-6">
+    <div class="flex items-center gap-4">
+      <!-- Desktop nav -->
+      <ul class="hidden md:flex items-center gap-1">
         {navLinks.map(({ href, label }) => (
           <li>
             <a
               href={href}
               class:list={[
-                "text-sm font-medium transition-colors",
+                "relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200",
                 currentPath === href || (href !== '/' && currentPath.startsWith(href))
-                  ? "text-primary-600 dark:text-primary-400"
-                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100"
+                  ? "text-primary-600 dark:text-primary-400 bg-primary-100/50 dark:bg-primary-900/30"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
               ]}
             >
               {label}
@@ -33,33 +34,124 @@ const currentPath = Astro.url.pathname;
         ))}
       </ul>
 
+      <!-- Theme toggle -->
       <button
         id="theme-toggle"
-        class="p-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+        class="group p-2.5 rounded-xl text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-200 cursor-pointer"
         aria-label="Toggle theme"
       >
-        <svg class="w-5 h-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="w-5 h-5 hidden dark:block transform group-hover:rotate-45 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
-        <svg class="w-5 h-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg class="w-5 h-5 block dark:hidden transform group-hover:-rotate-12 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
         </svg>
       </button>
+
+      <!-- Mobile hamburger -->
+      <button
+        id="menu-toggle"
+        class="md:hidden p-2.5 rounded-xl text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-200 cursor-pointer"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+      >
+        <div class="w-5 h-5 flex flex-col justify-center items-center">
+          <span id="hamburger-top" class="block w-5 h-0.5 bg-current transform transition-all duration-300 ease-out"></span>
+          <span id="hamburger-middle" class="block w-5 h-0.5 bg-current mt-1 transition-all duration-300 ease-out"></span>
+          <span id="hamburger-bottom" class="block w-5 h-0.5 bg-current mt-1 transform transition-all duration-300 ease-out"></span>
+        </div>
+      </button>
     </div>
   </nav>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="md:hidden overflow-hidden transition-all duration-300 ease-out max-h-0 opacity-0">
+    <div class="px-4 pb-4 pt-2 border-t border-primary-200/30 dark:border-primary-900/30">
+      <ul class="flex flex-col gap-1">
+        {navLinks.map(({ href, label }) => (
+          <li>
+            <a
+              href={href}
+              class:list={[
+                "block px-4 py-3 text-base font-medium rounded-xl transition-all duration-200",
+                currentPath === href || (href !== '/' && currentPath.startsWith(href))
+                  ? "text-primary-600 dark:text-primary-400 bg-primary-100/50 dark:bg-primary-900/30"
+                  : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800/50"
+              ]}
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
 </header>
 
 <script>
-  function setupThemeToggle() {
-    const toggle = document.getElementById('theme-toggle');
-    if (toggle) {
-      toggle.onclick = () => {
+  function setupHeader() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerTop = document.getElementById('hamburger-top');
+    const hamburgerMiddle = document.getElementById('hamburger-middle');
+    const hamburgerBottom = document.getElementById('hamburger-bottom');
+
+    let isMenuOpen = false;
+
+    // Theme toggle
+    if (themeToggle) {
+      themeToggle.onclick = () => {
         const isDark = document.documentElement.classList.toggle('dark');
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
       };
     }
+
+    // Menu toggle
+    if (menuToggle && mobileMenu && hamburgerTop && hamburgerMiddle && hamburgerBottom) {
+      menuToggle.onclick = () => {
+        isMenuOpen = !isMenuOpen;
+        menuToggle.setAttribute('aria-expanded', isMenuOpen.toString());
+
+        if (isMenuOpen) {
+          // Open menu
+          mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+          mobileMenu.style.opacity = '1';
+          
+          // Animate to X
+          hamburgerTop.style.transform = 'rotate(45deg) translateY(6px)';
+          hamburgerMiddle.style.opacity = '0';
+          hamburgerMiddle.style.transform = 'translateX(-10px)';
+          hamburgerBottom.style.transform = 'rotate(-45deg) translateY(-6px)';
+        } else {
+          // Close menu
+          mobileMenu.style.maxHeight = '0';
+          mobileMenu.style.opacity = '0';
+          
+          // Animate back to hamburger
+          hamburgerTop.style.transform = 'rotate(0) translateY(0)';
+          hamburgerMiddle.style.opacity = '1';
+          hamburgerMiddle.style.transform = 'translateX(0)';
+          hamburgerBottom.style.transform = 'rotate(0) translateY(0)';
+        }
+      };
+
+      // Close menu when clicking a link
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          isMenuOpen = false;
+          menuToggle.setAttribute('aria-expanded', 'false');
+          mobileMenu.style.maxHeight = '0';
+          mobileMenu.style.opacity = '0';
+          hamburgerTop.style.transform = 'rotate(0) translateY(0)';
+          hamburgerMiddle.style.opacity = '1';
+          hamburgerMiddle.style.transform = 'translateX(0)';
+          hamburgerBottom.style.transform = 'rotate(0) translateY(0)';
+        });
+      });
+    }
   }
 
-  setupThemeToggle();
-  document.addEventListener('astro:after-swap', setupThemeToggle);
+  setupHeader();
+  document.addEventListener('astro:after-swap', setupHeader);
 </script>

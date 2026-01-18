@@ -1,0 +1,103 @@
+---
+title: "Getting Started with Cybersecurity: Why Now Is the Time to Learn"
+description: "A practical guide to beginning your cybersecurity journey, with a look at why these skills matter more than ever in today's threat landscape."
+date: 2026-01-18
+tags: ["security", "tech", "learning"]
+---
+
+If you've been thinking about learning cybersecurity, there's never been a better time to start. The field is growing rapidly, the resources are more accessible than ever, and frankly, the world needs more people who understand how to secure systems.
+
+## This Week's Wake-Up Call
+
+Just this week, security researchers at Wiz disclosed a vulnerability they dubbed "CodeBreach" that [allowed potential takeover of AWS GitHub repositories](https://www.techzine.eu/news/infrastructure/137983/codebreach-enables-takeover-of-aws-github-repositories/), including the widely-used JavaScript SDK. The flaw? A **missing regex anchor**. Literally two characters (`^` and `$`) that weren't included in a security filter.
+
+Let that sink in. Two missing characters in a regular expression could have enabled attackers to:
+
+- Inject malicious code into the AWS JavaScript SDK
+- Compromise the AWS Console itself (which uses that SDK)
+- Potentially impact **66% of cloud environments** that run the SDK
+
+This wasn't some obscure edge case. This was a misconfiguration in AWS CodeBuild that could have led to one of the most significant supply chain attacks in history. The researchers were able to gain full admin access to repositories by exploiting how GitHub user IDs are assigned sequentially.
+
+## Why This Matters for Beginners
+
+Stories like CodeBreach might seem intimidating, but they actually illustrate why learning security fundamentals is so valuable:
+
+1. **Simple mistakes cause massive problems.** You don't need to be a genius to find vulnerabilities. Many critical bugs come from basic oversights.
+
+2. **Understanding beats memorization.** The researchers found this bug by understanding how regex works, how GitHub assigns IDs, and how build systems authenticate. Fundamentals matter.
+
+3. **Defenders are needed everywhere.** Every company runs software. Every system has potential vulnerabilities. The demand for security knowledge far exceeds the supply.
+
+## Where to Start
+
+If you're ready to begin learning, here's a practical roadmap:
+
+### 1. Learn the Fundamentals
+
+Before diving into hacking, understand what you're protecting:
+
+- **Networking basics:** TCP/IP, DNS, HTTP/HTTPS, how data moves
+- **Operating systems:** Linux command line, file permissions, processes
+- **Programming:** Python is great for security tools, and understanding code helps you find bugs in it
+
+### 2. Understand Common Vulnerabilities
+
+Start with the [OWASP Top 10](https://owasp.org/www-project-top-ten/) for web applications. Learn about:
+
+- Injection attacks (SQL injection, command injection)
+- Broken authentication
+- Cross-site scripting (XSS)
+- Security misconfigurations (like the regex issue in CodeBreach)
+
+### 3. Practice in Safe Environments
+
+Never test on systems you don't own. Instead, use:
+
+- **TryHackMe:** Guided, beginner-friendly rooms
+- **HackTheBox:** More challenging, great for building skills
+- **PortSwigger Web Security Academy:** Free, excellent for web app security
+- **OWASP WebGoat:** Deliberately vulnerable application for learning
+
+### 4. Build a Lab
+
+Set up your own practice environment:
+
+- A Linux VM (Kali or Parrot for security tools)
+- Vulnerable applications to test against
+- A note-taking system to document what you learn
+
+### 5. Join the Community
+
+Security is a collaborative field. Get involved:
+
+- Follow security researchers on social media
+- Read write-ups of disclosed vulnerabilities (like the Wiz CodeBreach report)
+- Participate in CTF (Capture The Flag) competitions
+- Contribute to open-source security tools
+
+## The Mindset Shift
+
+The most important thing you'll develop isn't a specific skill. It's a way of thinking. Security professionals constantly ask:
+
+- What assumptions did the developer make?
+- What happens if those assumptions are violated?
+- Where are the trust boundaries, and can they be crossed?
+
+This adversarial mindset takes time to develop, but it's what separates someone who can follow a tutorial from someone who can find new vulnerabilities.
+
+## Start Today
+
+You don't need a degree or certifications to begin (though they can help later). You don't need expensive equipment. You just need curiosity and persistence.
+
+Pick one thing from this post and start today:
+
+- Set up a TryHackMe account and complete the first room
+- Install Linux in a VM and learn basic commands
+- Read the full Wiz report on CodeBreach and try to understand each step
+
+The best time to start learning security was five years ago. The second best time is now.
+
+Security isn't just a career path. It's a critical skill for anyone building software. The more developers who understand security fundamentals, the fewer two-character bugs will make it into production systems that power the internet.
+
+Welcome to the rabbit hole. It only gets deeper from here.

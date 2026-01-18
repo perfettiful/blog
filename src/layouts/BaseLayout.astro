@@ -7,7 +7,7 @@ interface Props {
   image?: string;
 }
 
-const { title, description = "A blog about tech, gaming, and everything in between.", image = "/og-image.svg" } = Astro.props;
+const { title="blog.perfetti.dev", description = "A blog about software development, cybersecurity, and the tech that powers our world.", image = "/og-image.svg" } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 

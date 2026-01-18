@@ -8,34 +8,43 @@ import Footer from '../components/Footer.astro';
   <Header />
 
   <main class="flex-1">
-    <article class="max-w-3xl mx-auto px-4 py-12">
-      <header class="mb-10 flex flex-col sm:flex-row items-center sm:items-start gap-6">
-        <img 
-          src="/avatar-pixel.svg" 
-          alt="Nathan Perfetti low-poly portrait" 
-          class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl shadow-xl shrink-0"
-        />
-        <div class="text-center sm:text-left">
-          <h1 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
+    <article class="max-w-4xl mx-auto px-4 py-16">
+      <header class="mb-12 flex flex-col md:flex-row items-center md:items-start gap-8">
+        <!-- Avatar with inset ring -->
+        <div class="shrink-0 group">
+          <div class="relative">
+            <div class="absolute -inset-0.5 bg-gradient-to-br from-primary-400 to-primary-600 rounded-2xl opacity-0 group-hover:opacity-40 blur-md transition-all duration-300"></div>
+            <div class="relative p-1 bg-gradient-to-br from-primary-400 via-primary-500 to-primary-600 rounded-2xl shadow-lg group-hover:shadow-xl transition-all duration-200">
+              <img 
+                src="/prof-pic-low-poly.png" 
+                alt="Nathan Perfetti pixel art portrait" 
+                class="w-32 h-32 md:w-40 md:h-40 rounded-xl object-cover transform group-hover:scale-[1.01] transition-transform duration-200"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center md:text-left">
+          <h1 class="text-4xl md:text-5xl font-bold text-zinc-900 dark:text-zinc-100 mb-3">
             About Me
           </h1>
-          <p class="text-lg text-zinc-600 dark:text-zinc-400">
-            Software developer, gamer, and lifelong learner.
+          <p class="text-lg md:text-xl text-zinc-600 dark:text-zinc-400">
+            Software developer, security enthusiast, and lifelong learner.
           </p>
         </div>
       </header>
 
       <div class="prose">
         <p>
-          Hey there! I'm Nathan, a software developer with a passion for building things that matter.
-          My journey into tech started in an unexpected way: through video games. What began as curiosity
-          about how games worked turned into a lifelong obsession with understanding and creating software.
+          Hey there! I'm Nathan, a software developer with a passion for building secure systems and understanding how things break.
+          My journey into tech started in an unexpected way: exploiting a clone glitch in Pokemon Gold. What began as curiosity
+          about how games could be manipulated turned into a lifelong obsession with understanding software at a deep level.
         </p>
 
         <p>
-          These days I spend my time exploring new technologies, writing code, and occasionally writing
-          about the things I learn along the way. This blog is my space to share those thoughts and
-          hopefully help others who are on a similar journey.
+          These days I spend my time building software, learning about security, and occasionally writing
+          about the things I discover along the way. This blog is my space to share those thoughts and
+          hopefully help others who are on a similar journey, whether you're learning to code, breaking into security, or just curious about how things work under the hood.
         </p>
 
         <h2>What I Write About</h2>
@@ -45,10 +54,10 @@ import Footer from '../components/Footer.astro';
         </p>
 
         <ul>
-          <li>Software development and programming</li>
-          <li>Gaming and game development</li>
-          <li>Tech discoveries and experiments</li>
-          <li>Random thoughts and observations</li>
+          <li>Software development and secure coding practices</li>
+          <li>Cybersecurity fundamentals and news</li>
+          <li>Gaming and the tech behind it</li>
+          <li>Learning resources and career insights</li>
         </ul>
 
         <h2>Get in Touch</h2>
