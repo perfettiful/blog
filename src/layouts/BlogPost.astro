@@ -67,19 +67,27 @@ const jsonLd = {
   <Header />
 
   <!-- Reading Progress Bar -->
-  <div id="progress-bar" class="fixed top-0 left-0 h-0.5 bg-primary-500 z-[60] transition-all duration-100" style="width: 0%"></div>
+  <div id="progress-bar" class="fixed top-0 left-0 h-0.5 bg-primary-500 z-[60] transition-all duration-150" style="width: 0%">
+    <div id="progress-glow" class="absolute right-0 top-0 w-20 h-full bg-gradient-to-r from-transparent to-primary-400 opacity-0 transition-opacity duration-300"></div>
+  </div>
+  <div id="progress-complete" class="fixed top-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary-400 via-primary-300 to-primary-400 z-[61] opacity-0 pointer-events-none"></div>
 
   <main class="flex-1" transition:name="main" transition:animate="none">
     <article class="max-w-3xl mx-auto px-4 py-12">
-      <figure class="mb-8 -mx-4 sm:mx-0 overflow-hidden">
+      <figure class="mb-8 -mx-4 sm:mx-0 overflow-hidden relative">
         {heroImage ? (
-          <img
-            src={heroImage}
-            alt={`Hero image for ${title}`}
-            loading="eager"
-            decoding="async"
-            class="w-full h-48 sm:h-56 rounded-none sm:rounded-xl object-cover"
-          />
+          <>
+            {/* Skeleton shimmer placeholder */}
+            <div class="absolute inset-0 rounded-none sm:rounded-xl bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/40 dark:to-primary-800/30 skeleton-shimmer hero-skeleton transition-opacity duration-300"></div>
+            {/* Actual image with fade-in */}
+            <img
+              src={heroImage}
+              alt={`Hero image for ${title}`}
+              loading="eager"
+              decoding="async"
+              class="relative w-full h-48 sm:h-56 rounded-none sm:rounded-xl object-cover opacity-0 transition-opacity duration-700 ease-out hero-img"
+            />
+          </>
         ) : (
           <div class="w-full h-32 sm:h-40 rounded-none sm:rounded-xl bg-gradient-to-br from-primary-100 via-primary-50 to-primary-100 dark:from-primary-900/30 dark:via-primary-800/20 dark:to-primary-900/30 flex items-center justify-center relative overflow-hidden">
             <!-- Decorative pattern -->
@@ -186,31 +194,116 @@ const jsonLd = {
 <script>
   function setupProgressBar() {
     const progressBar = document.getElementById('progress-bar');
+    const progressGlow = document.getElementById('progress-glow');
+    const progressComplete = document.getElementById('progress-complete');
     const article = document.getElementById('article-content');
     
     if (!progressBar || !article) return;
 
+    let wasComplete = false;
+
     function updateProgress() {
-      const articleRect = article.getBoundingClientRect();
-      const articleTop = articleRect.top + window.scrollY;
-      const articleHeight = articleRect.height;
-      const windowHeight = window.innerHeight;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollY = window.scrollY;
-
-      const start = articleTop - windowHeight;
-      const end = articleTop + articleHeight;
-      const current = scrollY;
-
-      let progress = ((current - start) / (end - start)) * 100;
+      
+      let progress = (scrollY / docHeight) * 100;
       progress = Math.max(0, Math.min(100, progress));
 
       progressBar.style.width = `${progress}%`;
+      
+      // Show glow effect while scrolling
+      if (progressGlow) {
+        progressGlow.style.opacity = progress > 5 && progress < 100 ? '1' : '0';
+      }
+
+      // Completion animation
+      const isComplete = progress >= 99;
+      
+      if (isComplete && !wasComplete && progressComplete) {
+        wasComplete = true;
+        // Flash and shimmer animation
+        progressComplete.style.opacity = '1';
+        progressComplete.style.animation = 'shimmer 1s ease-out forwards';
+        
+        // Pulse the bar
+        progressBar.style.height = '3px';
+        progressBar.style.boxShadow = '0 0 10px var(--color-primary-400), 0 0 20px var(--color-primary-500)';
+        
+        setTimeout(() => {
+          progressBar.style.height = '2px';
+          progressBar.style.boxShadow = '0 0 5px var(--color-primary-500)';
+        }, 500);
+        
+        setTimeout(() => {
+          if (progressComplete) progressComplete.style.opacity = '0';
+        }, 1000);
+      } else if (!isComplete) {
+        wasComplete = false;
+        progressBar.style.boxShadow = 'none';
+        progressBar.style.height = '2px';
+      }
     }
 
     window.addEventListener('scroll', updateProgress, { passive: true });
     updateProgress();
   }
 
+  function setupHeroImage() {
+    const heroImg = document.querySelector('.hero-img') as HTMLImageElement | null;
+    const heroSkeleton = document.querySelector('.hero-skeleton') as HTMLElement | null;
+    
+    if (!heroImg) return;
+
+    function showImage() {
+      heroImg.classList.add('opacity-100');
+      if (heroSkeleton) {
+        heroSkeleton.style.opacity = '0';
+        setTimeout(() => {
+          heroSkeleton.style.display = 'none';
+        }, 300);
+      }
+    }
+
+    // Check if already loaded (cached)
+    if (heroImg.complete && heroImg.naturalHeight !== 0) {
+      showImage();
+    } else {
+      heroImg.addEventListener('load', showImage);
+    }
+  }
+
   setupProgressBar();
-  document.addEventListener('astro:after-swap', setupProgressBar);
+  setupHeroImage();
+  document.addEventListener('astro:after-swap', () => {
+    setupProgressBar();
+    setupHeroImage();
+  });
 </script>
+
+<style>
+  @keyframes shimmer {
+    0% {
+      opacity: 1;
+      background-position: -100% 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      background-position: 200% 0;
+    }
+  }
+  
+  #progress-complete {
+    background-size: 200% 100%;
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-primary-300) 25%,
+      var(--color-primary-200) 50%,
+      var(--color-primary-300) 75%,
+      transparent 100%
+    );
+  }
+</style>
