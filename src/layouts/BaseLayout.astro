@@ -2,7 +2,7 @@
 import '../styles/global.css';
 // Bundle fonts locally instead of Google Fonts CDN
 import '@fontsource-variable/inter';
-import '@fontsource-variable/jetbrains-mono';
+// JetBrains Mono loaded only when needed (code blocks)
 import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
@@ -51,8 +51,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
     <!-- RSS -->
     <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
-
-    <!-- Fonts are bundled locally via @fontsource - no external requests! -->
 
     <!-- View Transitions -->
     <ViewTransitions />
