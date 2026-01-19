@@ -1,7 +1,9 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import profilePic from '../assets/prof-pic-low-poly.png';
 ---
 
 <BaseLayout title="About" description="Learn more about Nathan Perfetti and this blog.">
@@ -18,11 +20,15 @@ import Footer from '../components/Footer.astro';
               <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-xl overflow-hidden">
                 <!-- Skeleton shimmer -->
                 <div class="absolute inset-0 bg-gradient-to-br from-primary-300 to-primary-400 dark:from-primary-700 dark:to-primary-800 skeleton-shimmer transition-opacity duration-300"></div>
-                <img 
-                  src="/prof-pic-low-poly.png" 
+                <Image 
+                  src={profilePic}
                   alt="Nathan Perfetti portrait" 
+                  width={160}
+                  height={160}
+                  format="webp"
+                  quality={80}
                   loading="eager"
-                  class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 ease-out img-lazy transform group-hover:scale-[1.01] transition-transform duration-200"
+                  class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 ease-out img-lazy transform group-hover:scale-[1.01]"
                 />
               </div>
             </div>
