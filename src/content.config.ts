@@ -11,8 +11,10 @@ const blog = defineCollection({
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
     image: z.string().optional(),
-    // heroImage can be either an optimized image or a string path
+    // heroImage - optimized image for display
     heroImage: image().optional(),
+    // ogImage - public URL path for social media sharing (1200x630 recommended)
+    ogImage: z.string().optional(),
     sources: z.array(z.object({
       title: z.string(),
       url: z.string().url(),

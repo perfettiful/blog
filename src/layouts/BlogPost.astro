@@ -16,13 +16,13 @@ interface Props {
   date: Date;
   updatedDate?: Date;
   tags?: string[];
-  image?: string;
+  ogImage?: string;
   heroImage?: ImageMetadata;
   readingTime?: number;
   sources?: Source[];
 }
 
-const { title, description, date, updatedDate, tags = [], image, heroImage, readingTime, sources = [] } = Astro.props;
+const { title, description, date, updatedDate, tags = [], ogImage, heroImage, readingTime, sources = [] } = Astro.props;
 
 const formattedDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
@@ -57,12 +57,12 @@ const jsonLd = {
     "@type": "WebPage",
     "@id": Astro.url.href
   },
-  ...(image && { "image": new URL(image, Astro.site).href }),
+  ...(ogImage && { "image": new URL(ogImage, Astro.site).href }),
   ...(tags.length > 0 && { "keywords": tags.join(", ") })
 };
 ---
 
-<BaseLayout title={title} description={description} image={image}>
+<BaseLayout title={title} description={description} image={ogImage}>
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
 
