@@ -30,12 +30,13 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
                 <Image 
                   src={profilePic}
                   alt="Nathan Perfetti portrait" 
-                  width={176}
-                  height={176}
+                  width={352}
+                  height={352}
                   format="webp"
-                  quality={80}
+                  quality={85}
                   loading="eager"
-                  decoding="async"
+                  decoding="sync"
+                  fetchpriority="high"
                   class="absolute inset-0 w-full h-full object-cover transform group-hover:scale-[1.01] transition-transform duration-200"
                 />
               </div>
