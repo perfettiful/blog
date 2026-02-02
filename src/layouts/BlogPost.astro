@@ -80,22 +80,20 @@ const jsonLd = {
     <article class="max-w-3xl mx-auto px-4 py-12">
       <figure class="mb-8 -mx-4 sm:mx-0 overflow-hidden relative">
         {heroImage ? (
-          <>
-            {/* Skeleton shimmer placeholder */}
-            <div class="absolute inset-0 rounded-none sm:rounded-xl bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/40 dark:to-primary-800/30 skeleton-shimmer hero-skeleton transition-opacity duration-300"></div>
-            {/* Optimized WebP image with fade-in */}
+          <div class="relative w-full h-48 sm:h-56 rounded-none sm:rounded-xl overflow-hidden bg-gradient-to-br from-primary-100 to-primary-200 dark:from-primary-900/40 dark:to-primary-800/30">
             <Image
               src={heroImage}
               alt={`Hero image for ${title}`}
               width={800}
               height={400}
               format="webp"
-              quality={60}
+              quality={70}
               loading="eager"
+              decoding="async"
               fetchpriority="high"
-              class="relative w-full h-48 sm:h-56 rounded-none sm:rounded-xl object-cover opacity-0 transition-opacity duration-700 ease-out hero-img"
+              class="absolute inset-0 w-full h-full object-cover"
             />
-          </>
+          </div>
         ) : (
           <div class="w-full h-32 sm:h-40 rounded-none sm:rounded-xl bg-gradient-to-br from-primary-100 via-primary-50 to-primary-100 dark:from-primary-900/30 dark:via-primary-800/20 dark:to-primary-900/30 flex items-center justify-center relative overflow-hidden">
             <!-- Decorative pattern -->
@@ -256,36 +254,8 @@ const jsonLd = {
     updateProgress();
   }
 
-  function setupHeroImage() {
-    const heroImg = document.querySelector('.hero-img') as HTMLImageElement | null;
-    const heroSkeleton = document.querySelector('.hero-skeleton') as HTMLElement | null;
-    
-    if (!heroImg) return;
-
-    function showImage() {
-      heroImg.classList.add('opacity-100');
-      if (heroSkeleton) {
-        heroSkeleton.style.opacity = '0';
-        setTimeout(() => {
-          heroSkeleton.style.display = 'none';
-        }, 300);
-      }
-    }
-
-    // Check if already loaded (cached)
-    if (heroImg.complete && heroImg.naturalHeight !== 0) {
-      showImage();
-    } else {
-      heroImg.addEventListener('load', showImage);
-    }
-  }
-
   setupProgressBar();
-  setupHeroImage();
-  document.addEventListener('astro:after-swap', () => {
-    setupProgressBar();
-    setupHeroImage();
-  });
+  document.addEventListener('astro:after-swap', setupProgressBar);
 </script>
 
 <style>

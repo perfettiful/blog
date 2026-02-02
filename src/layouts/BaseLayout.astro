@@ -128,42 +128,5 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body class="min-h-screen flex flex-col font-sans">
     <slot />
-
-    <!-- Global lazy image handler -->
-    <script>
-      function setupLazyImages() {
-        const lazyImages = document.querySelectorAll('.img-lazy') as NodeListOf<HTMLImageElement>;
-        
-        lazyImages.forEach((img) => {
-          const skeleton = img.previousElementSibling as HTMLElement | null;
-          
-          function showImage() {
-            img.classList.add('opacity-100');
-            if (skeleton && skeleton.classList.contains('skeleton-shimmer')) {
-              skeleton.style.opacity = '0';
-              setTimeout(() => {
-                skeleton.style.display = 'none';
-              }, 300);
-            }
-          }
-          
-          // Check if already loaded (cached)
-          if (img.complete && img.naturalHeight !== 0) {
-            showImage();
-          } else {
-            img.addEventListener('load', showImage, { once: true });
-          }
-        });
-      }
-
-      // Run on initial load
-      setupLazyImages();
-      
-      // Run after View Transitions
-      document.addEventListener('astro:after-swap', setupLazyImages);
-      
-      // Also run when DOM is ready (for dynamic content)
-      document.addEventListener('DOMContentLoaded', setupLazyImages);
-    </script>
   </body>
 </html>

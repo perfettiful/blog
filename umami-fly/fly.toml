@@ -1,0 +1,26 @@
+# Umami Analytics on Fly.io
+# Replace 'umami-perfetti' with your preferred app name
+
+app = 'umami-perfetti'
+primary_region = 'ord'  # Chicago - change to your closest region
+# Regions: ord (Chicago), iad (Virginia), lax (LA), sea (Seattle), 
+#          lhr (London), ams (Amsterdam), fra (Frankfurt), nrt (Tokyo)
+
+[build]
+
+[env]
+  DISABLE_TELEMETRY = "1"
+  TRACKER_SCRIPT_NAME = "script"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '512mb'
+  cpu_kind = 'shared'
+  cpus = 1

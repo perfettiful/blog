@@ -1,0 +1,113 @@
+---
+/**
+ * XPost - A styled quote card for attributing social media posts
+ * 
+ * Use this when quoting someone from X/Twitter. If you have the real tweet URL,
+ * it will link to it. If not, it displays as a styled quote.
+ * 
+ * For embedding REAL tweets with full data, consider using astro-embed:
+ * https://astro-embed.netlify.app/components/tweet/
+ */
+
+interface Props {
+  author: string;
+  handle: string;
+  url?: string;
+  date?: string;
+  avatarUrl?: string;
+  verified?: boolean;
+}
+
+const { author, handle, url, date, avatarUrl, verified = false } = Astro.props;
+
+// Generate initials for fallback avatar
+const initials = author
+  .split(' ')
+  .map(n => n[0])
+  .join('')
+  .toUpperCase()
+  .slice(0, 2);
+
+const WrapperTag = url ? 'a' : 'div';
+---
+
+<WrapperTag 
+  href={url}
+  target={url ? "_blank" : undefined}
+  rel={url ? "noopener noreferrer" : undefined}
+  class:list={["x-post-embed block my-6", { "group cursor-pointer": url, "cursor-default": !url }]}
+>
+  <div class:list={[
+    "border border-zinc-200 dark:border-zinc-700/50 rounded-xl p-4 bg-white dark:bg-zinc-900/50 transition-all duration-300",
+    { "hover:border-primary-400 dark:hover:border-primary-500/50 hover:shadow-lg hover:shadow-primary-500/5": url }
+  ]}>
+    <!-- Header -->
+    <div class="flex items-start gap-3 mb-3">
+      <!-- Avatar -->
+      {avatarUrl ? (
+        <img 
+          src={avatarUrl} 
+          alt={author}
+          class="w-10 h-10 rounded-full object-cover flex-shrink-0"
+        />
+      ) : (
+        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center flex-shrink-0">
+          <span class="text-white text-sm font-semibold">{initials}</span>
+        </div>
+      )}
+      
+      <!-- Author info -->
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-1">
+          <span class="font-semibold text-zinc-900 dark:text-zinc-100 truncate">{author}</span>
+          {verified && (
+            <svg class="w-4 h-4 text-blue-500 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.818-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.437 2.25c-.415-.165-.866-.25-1.336-.25-2.11 0-3.818 1.79-3.818 4 0 .494.083.964.237 1.4-1.272.65-2.147 2.018-2.147 3.6 0 1.495.782 2.798 1.942 3.486-.02.17-.032.34-.032.514 0 2.21 1.708 4 3.818 4 .47 0 .92-.086 1.335-.25.62 1.334 1.926 2.25 3.437 2.25 1.512 0 2.818-.916 3.437-2.25.415.163.865.248 1.336.248 2.11 0 3.818-1.79 3.818-4 0-.174-.012-.344-.033-.513 1.158-.687 1.943-1.99 1.943-3.484zm-6.616-3.334l-4.334 6.5c-.145.217-.382.334-.625.334-.143 0-.288-.04-.416-.126l-.115-.094-2.415-2.415c-.293-.293-.293-.768 0-1.06s.768-.294 1.06 0l1.77 1.767 3.825-5.74c.23-.345.696-.436 1.04-.207.346.23.44.696.21 1.04z"/>
+            </svg>
+          )}
+        </div>
+        <span class="text-sm text-zinc-500 dark:text-zinc-400">@{handle}</span>
+      </div>
+
+      <!-- X logo -->
+      <svg class="w-5 h-5 text-zinc-400 dark:text-zinc-500 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+    </div>
+
+    <!-- Post content -->
+    <div class="text-zinc-700 dark:text-zinc-300 text-[15px] leading-relaxed">
+      <slot />
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-3 pt-3 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-between">
+      {date && (
+        <span class="text-xs text-zinc-400 dark:text-zinc-500">{date}</span>
+      )}
+      {url ? (
+        <span class="text-xs text-primary-600 dark:text-primary-400 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 ml-auto">
+          View on X
+          <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </span>
+      ) : (
+        <span class="text-xs text-zinc-400 dark:text-zinc-500 italic ml-auto">via X</span>
+      )}
+    </div>
+  </div>
+</WrapperTag>
+
+<style>
+  .x-post-embed {
+    /* Override prose link styles */
+    background-image: none !important;
+    text-decoration: none !important;
+  }
+  
+  .x-post-embed:hover {
+    background-image: none !important;
+    background-size: 0 !important;
+  }
+</style>
