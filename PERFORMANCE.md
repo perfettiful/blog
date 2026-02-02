@@ -16,9 +16,9 @@ All images are automatically optimized at build time:
 
 | Image Type | Dimensions | Format | Quality | Size |
 |------------|-----------|--------|---------|------|
-| Hero images (blog posts) | 800×400 | WebP | 70% | 42-69 KB |
-| Thumbnails (post cards) | 256×200 (2x retina) | WebP | 80% | 11-15 KB |
-| Profile picture | 320×320 / 352×352 (2x retina) | WebP | 85% | 18-20 KB |
+| Hero images (blog posts) | 800×400 | WebP | 55% | 36-60 KB |
+| Thumbnails (post cards) | 256×200 (2x retina) | WebP | 80% | 11-16 KB |
+| Profile picture | 320×320 / 352×352 (2x retina) | WebP | 85% | 18-21 KB |
 
 **Key techniques:**
 - **2x resolution for retina displays** - Prevents blurry images on high-DPI screens
