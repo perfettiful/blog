@@ -1,0 +1,78 @@
+---
+title: "When AI Gets Too Good: OpenAI's First 'High Risk' Model"
+description: "OpenAI's GPT-5.3-Codex is so capable at coding that it triggered unprecedented safety controls. What this means for cybersecurity."
+date: 2026-02-08
+tags: ["security", "ai"]
+heroImage: "../../assets/images/codex-risk-hero.png"
+sources:
+  - title: "OpenAI's new model leaps ahead in coding capabilities—but raises unprecedented cybersecurity risks"
+    url: "https://fortune.com/2026/02/05/openai-gpt-5-3-codex-warns-unprecedented-cybersecurity-risks/"
+  - title: "OpenAI Preparedness Framework"
+    url: "https://openai.com/safety/preparedness"
+---
+
+For the first time ever, OpenAI has released a model that hit "high" on their internal cybersecurity risk framework. Not medium. Not elevated. *High*.
+
+GPT-5.3-Codex dropped this week, and while the headlines focus on its impressive coding benchmarks, there's a more interesting story here: OpenAI is actively limiting access to their own product because it's too capable.
+
+## What's Different About This Release
+
+Every major AI model goes through OpenAI's Preparedness Framework before release. It's their internal system for evaluating risks across categories like cybersecurity, biosecurity, and autonomous behavior. Models get rated from low to critical.
+
+Until now, no released model had ever hit "high" for cybersecurity.
+
+GPT-5.3-Codex is different. According to Sam Altman, it's "good enough at coding and reasoning that it could meaningfully enable real-world cyber harm, especially if automated or used at scale."
+
+That's a significant statement. OpenAI isn't speculating about theoretical risks—they're acknowledging their model has crossed a practical threshold.
+
+## The Unusual Rollout
+
+Here's where it gets interesting. OpenAI is doing something they've never done before: **gating API access**.
+
+Regular ChatGPT users can access GPT-5.3-Codex for everyday coding tasks—writing functions, debugging, testing. But the full API that would let developers automate the model at scale? That's locked behind a new "trusted access" program for vetted security professionals.
+
+Think about what that means. OpenAI built the most powerful coding model in the world, and then immediately started limiting who could use it programmatically. They're essentially saying: "This is too dangerous to let anyone automate."
+
+## The Dual-Use Problem
+
+This is the fundamental tension with advanced AI coding tools. The same capabilities that make a model excellent at:
+
+- Finding vulnerabilities in code
+- Writing exploits for educational purposes
+- Automating security testing
+
+...also make it excellent at:
+
+- Finding vulnerabilities to exploit maliciously
+- Writing actual malware
+- Automating attacks at scale
+
+OpenAI's blog post is careful to note they don't have "definitive evidence" the model can fully automate cyberattacks. But they're taking precautionary measures anyway, which suggests their red team found some concerning capabilities.
+
+## $10 Million for Defense
+
+In an interesting move, OpenAI is offering $10 million in API credits to developers working on defensive cybersecurity applications. They're essentially trying to ensure the good guys get access too.
+
+It's a pragmatic approach: if powerful AI coding tools are inevitable, invest in making sure defenders can use them. The question is whether that's enough to offset the asymmetry between attack and defense.
+
+## What This Means Going Forward
+
+We're entering new territory. For years, the AI safety conversation has been somewhat theoretical—models might become dangerous, capabilities could enable harm, risks may emerge. 
+
+GPT-5.3-Codex is the first mainstream model where the company itself is saying: this one actually crosses the line. We're deploying it anyway, but with guardrails we've never used before.
+
+A few things to watch:
+
+1. **Will the guardrails hold?** API restrictions only work until someone finds a workaround. Jailbreaks, prompt injection, or simply using ChatGPT with clever prompting could bypass some controls.
+
+2. **What about competitors?** OpenAI is being cautious, but Anthropic, Google, and open-source projects might not implement the same restrictions. A model this capable sets a new benchmark others will try to match.
+
+3. **How does this scale?** If GPT-5.3 hits "high" on cybersecurity risk, what happens with GPT-6? At some point, the Preparedness Framework might need to grapple with models that hit "critical."
+
+## The Bigger Picture
+
+I've written before about the [security nightmare of agentic AI](/blog/the-security-nightmare-of-agentic-ai). This feels like a data point validating those concerns. We're not talking about hypothetical future models—we're talking about one you can use today in ChatGPT.
+
+The silver lining is that OpenAI is being transparent about the risk and implementing controls. Whether those controls are sufficient is another question entirely.
+
+What we're watching is the AI industry trying to figure out, in real time, how to release increasingly powerful tools responsibly. GPT-5.3-Codex might be the first "high risk" model, but it definitely won't be the last.
