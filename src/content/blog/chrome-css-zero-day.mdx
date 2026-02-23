@@ -1,0 +1,82 @@
+---
+title: "They Hacked CSS: Chrome's First Zero Day of 2026"
+description: "A use-after-free in Chrome's CSS parser is being actively exploited in the wild. Here's what happened and why your browser's stylesheet code is an attack surface."
+date: 2026-02-22
+tags: ["security", "browsers"]
+heroImage: "../../assets/images/chrome-css-hero.png"
+sources:
+  - title: "They Hacked CSS (YouTube)"
+    url: "https://www.youtube.com/watch?v=AZUp5nY7BWU"
+  - title: "Chrome Security Release"
+    url: "https://chromereleases.googleblog.com/"
+---
+
+They hacked CSS.
+
+Not JavaScript. Not WebAssembly. Not some obscure media codec. The actual cascading stylesheets your browser uses to make things look pretty. CVE 2026 2441 is Chrome's first zero day of 2026, and attackers are actively exploiting it in the wild.
+
+## The Vulnerability
+
+The bug is a use after free in Chrome's CSS parsing, specifically in how the browser handles `@font-feature-values` declarations. It carries a CVSS score of 8.8, which puts it firmly in the "this is bad" territory. An attacker can execute arbitrary code inside Chrome's sandbox by serving a crafted HTML page.
+
+Google's threat analysis team caught this exploit being thrown in the wild, which is why they're being intentionally vague about the details. The patch is out, but plenty of browsers haven't updated yet.
+
+## Wait, How Do You Hack CSS?
+
+This is the part that trips people up. CSS seems so declarative, so simple. You set a font, pick a color, done. But here's the thing: the code that *parses* that CSS isn't CSS. It's C++. And C++ has all the memory safety issues you'd expect.
+
+When Chrome encounters a stylesheet, it doesn't just read the text. It builds internal data structures, allocates memory, creates references to fonts and style rules. All of that happens in compiled code that's been around for years.
+
+The specific issue is in something called `CSSFontFeatureValueMaps`. When you define custom font features like this:
+
+```css
+@font-feature-values "MyFont" {
+  @styleset {
+    fancy: 1;
+  }
+}
+```
+
+Chrome creates a map structure to track those values. The bug happens when you iterate over that map in JavaScript while simultaneously modifying or deleting entries from it. Classic race condition stuff.
+
+## Use After Free 101
+
+For anyone unfamiliar with the term: a use after free is exactly what it sounds like. You have a pointer to something in memory. You free that memory. But the pointer is still there, still being used. Now that pointer could be pointing at whatever got allocated in that same spot.
+
+The typical exploitation path goes like this:
+
+1. You control some object A and get a pointer to it
+2. You free A
+3. You allocate a different object B in the same memory location
+4. Now that original pointer thinks it's pointing at A, but it's actually B
+5. You use the mismatch to read or write memory you shouldn't access
+
+In this case, Chrome was holding a reference to entries in a CSS map. JavaScript could delete those entries while Chrome was still iterating. The dangling reference becomes exploitable.
+
+## The Fix
+
+Google's solution was straightforward: instead of holding a reference to the map entries while iterating, they now make a copy and iterate over that. It's a defensive pattern that prevents the "modifying while iterating" problem entirely.
+
+There's apparently a TODO in the code for a more elegant long term solution, but for now, copying works.
+
+## Why Browsers Are Hard
+
+This isn't an isolated incident. Chrome patched eight zero days in 2025 alone. The reality is that browsers are impossibly complex attack surfaces. They parse arbitrary HTML, CSS, JavaScript, images, video, audio, fonts, PDFs, and dozens of other formats. All that parsing happens in performance critical C++ code.
+
+Mozilla created Rust specifically because of this problem. Their CSS renderer (Servo) is written in Rust, where use after free bugs are prevented by the compiler. Chrome still uses C++ for most of its rendering pipeline, which means bugs like this will keep showing up.
+
+## What You Should Do
+
+Update Chrome. Right now. Go to Settings, About Chrome, let it pull the latest version. If you're on version 134.0.6998.117 or later, you're patched.
+
+That's genuinely it. Browser zero days are scary but the mitigations are simple: keep your browser updated, let the security teams do their jobs.
+
+If you're a defender at an organization, make sure your fleet management pushes browser updates aggressively. A lot of enterprises are running browsers that are weeks or months behind, which means known exploits are still viable against them.
+
+## The Uncomfortable Truth
+
+There's a larger conversation here about the continued use of memory unsafe languages for security critical code. Every major browser vendor has acknowledged this problem. Google has the "memory safety" initiative. Mozilla has Rust. Microsoft is exploring memory safe rewrites of Windows components.
+
+But rewrites take years. The Chrome codebase is massive. In the meantime, we get bugs like this: a use after free in stylesheet parsing that lets attackers run code on your machine.
+
+Update your browser.
