@@ -1,0 +1,80 @@
+---
+title: "The XZ Backdoor: How One Developer Nearly Compromised the Internet"
+description: "A deep dive into the mechanics of the XZ Utils backdoor attack and what it means for open source security."
+date: 2026-03-01
+tags: ["security", "linux", "open-source"]
+heroImage: "../../assets/images/xz-backdoor-hero.png"
+sources:
+  - title: "Veritasium: The Internet Was Weeks Away From Disaster"
+    url: "https://www.youtube.com/watch?v=aoag03mSuXQ"
+  - title: "Andres Freund's Original Disclosure"
+    url: "https://www.openwall.com/lists/oss-security/2024/03/29/4"
+---
+
+In early 2024, the internet came within weeks of catastrophe. A sophisticated attacker spent over two years infiltrating a tiny but critical open source project, planting a backdoor that would have given them access to millions of servers worldwide. The only reason we know about it is because one developer noticed a half second delay during a routine test.
+
+## The Target: SSH
+
+SSH (Secure Shell) is the backbone of remote server administration. When you control a machine remotely, whether that's a web server, a database, or a nuclear submarine's systems, there's a good chance you're using SSH. The most popular implementation, OpenSSH, is heavily audited and scrutinized because compromising it would be like getting a master key to every hotel room on the internet.
+
+Attacking OpenSSH directly would be nearly impossible. Too many eyes on the code. But the open source model has a weakness: dependencies. OpenSSH doesn't exist in isolation. It relies on dozens of smaller libraries, each maintained by different people with varying levels of resources.
+
+## The Weak Link: XZ Utils
+
+XZ Utils is a compression tool maintained primarily by one person, Lasse Collin, since 2005. It's incredibly good at what it does, which is why it spread into nearly every major Linux distribution. Lasse never got paid for this work. It was a passion project, maintained on nights and weekends for two decades.
+
+By 2021, Lasse was burning out. Forum posts show developers pressuring him to merge patches faster, complaining that the project was stagnating. Then someone new showed up: Jia Tan. Helpful, responsive, technically competent. Over time, Jia took on more responsibility until Lasse handed over maintainership entirely.
+
+Jia Tan was not who he appeared to be.
+
+## The Attack: Three Steps
+
+### Step 1: The Trojan Horse
+
+Jia couldn't just commit malicious code to the repository. Git tracks every change, and obvious backdoors would be spotted immediately. Instead, he hid the payload inside binary test files. These blobs are used to verify compression and decompression work correctly. Nobody reads them because they're supposed to be random garbage data.
+
+The build system was then modified to quietly extract and inject the payload during compilation. The malicious code never appeared as readable source code on GitHub.
+
+### Step 2: The Goldilocks Zone
+
+The payload needed to hijack RSA authentication in SSH. When you connect to a server, SSH verifies your identity using cryptographic keys. Jia's code would intercept this process and check for a special master key that only he possessed. If it detected that key, it would grant access. If not, it would pass the request to the legitimate code and nobody would notice.
+
+The technical challenge was timing. Modern systems use a Global Offset Table (GOT) that maps function names to memory addresses. Jia needed to overwrite the entry for RSA_decrypt, but the system fills in this table during startup and then marks it read only. His window was tiny: after the legitimate address was written but before the table locked down.
+
+He solved this using IFUNC resolvers (normally used for hardware optimization) to run code early during startup, combined with a debugging feature called audit hooks that fires whenever the linker writes to the GOT. When the linker wrote the real RSA_decrypt address, his hook fired and swapped in the malicious version.
+
+### Step 3: The Cat Burglar
+
+Once inside, the backdoor was paranoid about detection. It implemented its own encryption layer so only someone with the correct key could trigger it. It wiped logs to cover its tracks. It had safety checks throughout to avoid crashing and drawing attention. The backdoor even garbled its own strings so they wouldn't appear in memory scans.
+
+All of this sophistication had a cost: performance. Each authentication request now ran through extra code, adding about 400 to 500 milliseconds of delay.
+
+## The Discovery
+
+Andres Freund is a Microsoft engineer who works on PostgreSQL. In March 2024, he was testing a pre-release version of Debian when he noticed SSH connections were slightly slower than expected. Half a second isn't much, but it nagged at him.
+
+He'd already seen weird Valgrind errors from the XZ update weeks earlier. Unable to let it go, he traced the slowdown back to XZ and started digging. What he found wasn't a bug. It was a backdoor.
+
+The irony is painful. Jia's meticulous obfuscation, all those layers designed to avoid detection, actually drew attention. A simpler attack might have slipped through unnoticed.
+
+## The Fallout
+
+Within hours of Andres's disclosure, Linux distributions worldwide rolled back the compromised XZ versions. The open source community tore through similar projects looking for other attacks but found almost nothing, which is concerning in its own way. The incentives for nation states to plant backdoors are obvious, so where are all the others we haven't found?
+
+Jia Tan vanished immediately and has never been heard from since. Timestamp analysis suggests the operation was likely run by a nation state actor, possibly Russia's APT29 (Cozy Bear), though definitive attribution is impossible.
+
+## Practical Takeaways
+
+**For organizations:**
+The XZ attack exploited a critical dependency maintained by a single unpaid volunteer. Audit your dependency trees. Understand who maintains the software your infrastructure relies on. Consider funding the projects that underpin your operations.
+
+**For security teams:**
+Zero trust isn't just about network architecture. Treat updates with suspicion, especially for critical infrastructure. Staged rollouts and canary deployments would have caught this before widespread distribution.
+
+**For developers:**
+Anomalies matter. Andres could have ignored a half second delay, but his instinct to investigate saved the internet. Performance regression testing and behavioral analysis can catch attacks that code review misses.
+
+**For the industry:**
+This wasn't a failure of open source. Closed source software has the same dependency problems, just without the community that ultimately caught this attack. The real failure was expecting critical infrastructure to be maintained for free forever by volunteers on the edge of burnout.
+
+Lasse Collin gave the world a gift. We repaid him by poisoning it and then implicitly blaming him for not preventing the attack. That's not sustainable. If we want secure infrastructure, we need to fund the people who build it.

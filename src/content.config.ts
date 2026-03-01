@@ -6,7 +6,8 @@ const blog = defineCollection({
   schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string(),
-    date: z.coerce.date(),
+    // Date is optional for drafts, but required for published posts (validated via refine)
+    date: z.coerce.date().optional(),
     updatedDate: z.coerce.date().optional(),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
@@ -19,7 +20,10 @@ const blog = defineCollection({
       title: z.string(),
       url: z.string().url(),
     })).optional(),
-  }),
+  }).refine(
+    (data) => data.draft || data.date !== undefined,
+    { message: "Published posts must have a date. Add 'date' or set 'draft: true'.", path: ["date"] }
+  ),
 });
 
 export const collections = { blog };
